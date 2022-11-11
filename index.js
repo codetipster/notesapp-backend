@@ -5,6 +5,9 @@ const express = require('express')
 const app = express()
 //json-parser to help us access the request body for a POST request
 app.use(express.json())
+//cors middleware addition-allows request from all sources
+const cors = require('cors')
+app.use(cors())
 //temporarily store resources in a notes variable- this should come from DB
 let notes = [
     {
