@@ -47,8 +47,14 @@ let notes = [
     }
   })
 
-  
 
+  //DELETE
+  app.delete('/api/notes/:id', (request, response) => {
+    const id = Number(request.params.id)
+    //return all other note, except the one with this id
+    notes = notes.filter(n => n.id !== id)
+    response.status(204).end()
+  })
 
 
 
