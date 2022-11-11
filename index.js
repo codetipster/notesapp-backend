@@ -56,9 +56,6 @@ let notes = [
     response.status(204).end()
   })
 
-
-
-
 //Tell the server on what port it should listen to for an incoming server request from client.  
 const PORT = 3001
 app.listen(PORT, () => {
