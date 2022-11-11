@@ -3,6 +3,8 @@ const { request } = require('express')
 const express = require('express')
 //store it in the app variable
 const app = express()
+//json-parser to help us access the request body for a POST request
+app.use(express.json())
 //temporarily store resources in a notes variable- this should come from DB
 let notes = [
     {
@@ -55,6 +57,38 @@ let notes = [
     notes = notes.filter(n => n.id !== id)
     response.status(204).end()
   })
+
+
+
+  //POST new data to server
+  app.post('/api/notes', (request, response) => {
+    //to attach id, if notes already exist, creat an array of id's(map) 4 all the notes, and find the maximum one
+
+    const generateId = () => {
+        const  maxID = notes.length > 0 ? Math.max(...notes.map(n => n.id)) : 0
+        return maxID + 1
+    } 
+
+    const body = request.body  //access request body to get user added content
+    if(!body.content){
+        return response.status(400).json({
+            error: "content is missing"
+        })
+    }
+
+    const note = {
+        content: body.content,
+        important: body.important || false,
+        date: new Date(),
+        id: generateId(),
+    }
+
+    notes = notes.concat(note)
+    response.json(note)
+  })
+
+
+
 
 //Tell the server on what port it should listen to for an incoming server request from client.  
 const PORT = 3001
