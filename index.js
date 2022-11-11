@@ -88,6 +88,13 @@ let notes = [
   })
 
 
+  //UnknownEndPoints
+  const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+  
+  app.use(unknownEndpoint)
+
 
 
 //Tell the server on what port it should listen to for an incoming server request from client.  
