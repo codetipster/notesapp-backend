@@ -8,6 +8,8 @@ app.use(express.json())
 //cors middleware addition-allows request from all sources
 const cors = require('cors')
 app.use(cors())
+
+app.use(express.static('build'))
 //temporarily store resources in a notes variable- this should come from DB
 let notes = [
     {
