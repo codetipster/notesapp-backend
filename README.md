@@ -10,4 +10,4 @@ Create a Heroku account in https://devcenter.heroku.com/. Install the Heroku pac
 - From the command line Run `npm install` to install all dependencies.
 - To run in your local machine: Run `npm run dev` to launch the application.
 
-### N.B: The Json server is hosted on: https://lit-garden-32667.herokuapp.com/api/notes and can be accessed from any client with an HTTP request to the server.
+### N.B: The Json server is hosted on: https://lit-garden-32667.herokuapp.com/api/notes and can be accessed from any client with an HTTP request to the server. But with the production build file committed, the full production build is accessible at: https://lit-garden-32667.herokuapp.com 
