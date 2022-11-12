@@ -32,6 +32,10 @@ let notes = [
 
   //Defining routes to respond to http requests for the above resource.
 
+  app.get('/', (request, response) => {
+    response.send('<h1>Hello World!</h1>')
+  })
+
   //get ALL notes
   app.get('/api/notes', (request, response) => {
     response.json(notes)
