@@ -13,33 +13,8 @@ app.use(express.static('build'))
 //temporarily store resources in a notes variable- this should come from DB
 
 
-  //Replacing the above notes array with a mongoDB/mongoose data
-const mongoose = require('mongoose')
-if (process.argv.length < 3) {
-    console.log('Please provide the password as an argument: npm run dev <password>')
-    process.exit(1)
-  }
-const password = process.argv[2]
-//database connection url
-const url = `mongodb+srv://notesapp:${password}@cluster0.gyc0yac.mongodb.net/noteApp?retryWrites=true&w=majority`
-//connect
-mongoose.connect(url)
-//define a schema as a Js object
-const noteSchema = new mongoose.Schema({
-    content: String,
-    date: Date,
-    important: Boolean,
-  })
-  //turn the id property of the schema object to a string
-  noteSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-      returnedObject.id = returnedObject._id.toString()
-      delete returnedObject._id
-      delete returnedObject.__v
-    }
-  })
-//create a document with the schema
-const Note = mongoose.model('Note', noteSchema)
+  //Replacing the above notes array with a mongoDB/mongoose data from models folder
+const Note = require('./models/notes')
 
 
 //Defining routes to respond to http requests for the above resource.
