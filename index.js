@@ -55,31 +55,25 @@ app.get('/api/notes', (request, response) => {
 
 
 
-  //POST new data to server
+  //POST new data to server(this time we are posting to the database!)
   app.post('/api/notes', (request, response) => {
-    //to attach id, if notes already exist, creat an array of id's(map) 4 all the notes, and find the maximum one
-
-    const generateId = () => {
-        const  maxID = notes.length > 0 ? Math.max(...notes.map(n => n.id)) : 0
-        return maxID + 1
-    } 
-
-    const body = request.body  //access request body to get user added content
-    if(!body.content){
+    
+    const body = request.body  //access request body to get user added content from  form
+    if(body.content===undefined){
         return response.status(400).json({
             error: "content is missing"
         })
     }
-
-    const note = {
+    //create new note from content body with the Note object.
+    const note = new Note ({
         content: body.content,
         important: body.important || false,
         date: new Date(),
-        id: generateId(),
-    }
+    })
 
-    notes = notes.concat(note)
-    response.json(note)
+    note.save().then(savedNote => {
+      response.json(savedNote)
+    })
   })
 
 
