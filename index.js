@@ -11,39 +11,19 @@ app.use(cors())
 
 app.use(express.static('build'))
 //temporarily store resources in a notes variable- this should come from DB
-let notes = [
-    {
-      id: 1,
-      content: "HTML is easy",
-      date: "2022-05-30T17:30:31.098Z",
-      important: true
-    },
-    {
-      id: 2,
-      content: "Browser can execute only Javascript",
-      date: "2022-05-30T18:39:34.091Z",
-      important: false
-    },
-    {
-      id: 3,
-      content: "GET and POST are the most important methods of HTTP protocol",
-      date: "2022-05-30T19:20:14.298Z",
-      important: true
-    }
-  ]
+
 
   //Replacing the above notes array with a mongoDB/mongoose data
 const mongoose = require('mongoose')
 if (process.argv.length < 3) {
-    console.log('Please provide the password as an argument: node mongo.js <password>')
+    console.log('Please provide the password as an argument: npm run dev <password>')
     process.exit(1)
   }
-
 const password = process.argv[2]
-
 //database connection url
 const url = `mongodb+srv://notesapp:${password}@cluster0.gyc0yac.mongodb.net/noteApp?retryWrites=true&w=majority`
-
+//connect
+mongoose.connect(url)
 //define a schema as a Js object
 const noteSchema = new mongoose.Schema({
     content: String,
@@ -53,15 +33,18 @@ const noteSchema = new mongoose.Schema({
 //create a document with the schema
 const Note = mongoose.model('Note', noteSchema)
 
-  //Defining routes to respond to http requests for the above resource.
-  app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
-  })
 
-  //get ALL notes
-  app.get('/api/notes', (request, response) => {
+//Defining routes to respond to http requests for the above resource.
+app.get('/', (request, response) => {
+  response.send('<h1>Hello World!</h1>')
+})
+
+//get ALL notes
+app.get('/api/notes', (request, response) => {
+  Note.find({}).then(notes => {
     response.json(notes)
-  })
+   })
+})
 
   //get a single unique note: handles all HTTP GET requests that are of the form /api/notes/SOMETHING
   app.get('/api/notes/:id', (request, response) => {
