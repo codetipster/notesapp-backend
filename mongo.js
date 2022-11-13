@@ -23,13 +23,17 @@ mongoose
   .connect(url)
   .then((result) => {
     console.log('connected')
-
-    const note = new Note({
-      content: 'CSS is very hard but made easy with libraries',
-      date: new Date(),
-      important: false,
+    Note.find({}).then(result => {
+      result.forEach(note => {
+        console.log(note)
+      })
+      mongoose.connection.close()
     })
-
+    //const note = new Note({
+      //content: 'CSS is very hard but made easy with libraries',
+      //date: new Date(),
+      //important: false,
+    //})
     return note.save()
   })
   .then(() => {
