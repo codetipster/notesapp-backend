@@ -30,6 +30,14 @@ const noteSchema = new mongoose.Schema({
     date: Date,
     important: Boolean,
   })
+  //turn the id property of the schema object to a string
+  noteSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+      returnedObject.id = returnedObject._id.toString()
+      delete returnedObject._id
+      delete returnedObject.__v
+    }
+  })
 //create a document with the schema
 const Note = mongoose.model('Note', noteSchema)
 
