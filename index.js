@@ -32,8 +32,28 @@ let notes = [
     }
   ]
 
-  //Defining routes to respond to http requests for the above resource.
+  //Replacing the above notes array with a mongoDB/mongoose data
+const mongoose = require('mongoose')
+if (process.argv.length < 3) {
+    console.log('Please provide the password as an argument: node mongo.js <password>')
+    process.exit(1)
+  }
 
+const password = process.argv[2]
+
+//database connection url
+const url = `mongodb+srv://notesapp:${password}@cluster0.gyc0yac.mongodb.net/noteApp?retryWrites=true&w=majority`
+
+//define a schema as a Js object
+const noteSchema = new mongoose.Schema({
+    content: String,
+    date: Date,
+    important: Boolean,
+  })
+//create a document with the schema
+const Note = mongoose.model('Note', noteSchema)
+
+  //Defining routes to respond to http requests for the above resource.
   app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
   })
