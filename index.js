@@ -3,13 +3,13 @@ const { request } = require('express')
 const express = require('express')
 //store it in the app variable
 const app = express()
-//json-parser to help us access the request body for a POST request
-app.use(express.json())
 //cors middleware addition-allows request from all sources
 const cors = require('cors')
 app.use(cors())
-
+//middleware for frontend 
 app.use(express.static('build'))
+//json-parser to help us access the request body for a POST request
+app.use(express.json())
 //temporarily store resources in a notes variable- this should come from DB
 
 
@@ -30,7 +30,7 @@ app.get('/api/notes', (request, response) => {
 })
 
   //get a single unique note: handles all HTTP GET requests that are of the form /api/notes/SOMETHING
-  app.get('/api/notes/:id', (request, response) => {
+  app.get('/api/notes/:id', (request, response, next) => {
     Note.findById(request.params.id).then(note => {
       if (note) {
         response.json(note)
@@ -38,10 +38,7 @@ app.get('/api/notes', (request, response) => {
         response.status(404).end()
       }
     })
-    .catch(error => {
-      console.log(error)
-      response.status(400).send({ error: 'malformatted id' })
-    })
+    .catch(error => next(error))
   })
 
 
@@ -84,6 +81,20 @@ app.get('/api/notes', (request, response) => {
   
   app.use(unknownEndpoint)
 
+
+  //error handler
+  const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+  
+    if (error.name === 'CastError') {
+      return response.status(400).send({ error: 'malformatted id' })
+    } 
+  
+    next(error)
+  }
+  
+  // this has to be the last loaded middleware.
+  app.use(errorHandler)
 
 
 //Tell the server on what port it should listen to for an incoming server request from client.  
