@@ -43,11 +43,12 @@ app.get('/api/notes', (request, response) => {
 
 
   //DELETE
-  app.delete('/api/notes/:id', (request, response) => {
-    const id = Number(request.params.id)
-    //return all other note, except the one with this id
-    notes = notes.filter(n => n.id !== id)
-    response.status(204).end()
+  app.delete('/api/notes/:id', (request, response, next) => {
+    Note.findByIdAndRemove(request.params.id)
+      .then(result => {
+        response.status(204).end()
+      })
+      .catch(error => next(error))
   })
 
 
