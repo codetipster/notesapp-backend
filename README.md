@@ -17,3 +17,5 @@ visit mongo atlas
 login/signup for a free account
 create a cluster and add an administrative user credential
 run node mongo.js <password> (password is passed as process.argv[2] through the command line)
+
+NB: Do not forget to set the database url connection with `heroku config:set MONGODB_URI=mongodb+srv://fullstack:secretpasswordhere@cluster0-ostce.mongodb.net/note-app?retryWrites=true`when you build yours
