@@ -32,7 +32,15 @@ app.get('/api/notes', (request, response) => {
   //get a single unique note: handles all HTTP GET requests that are of the form /api/notes/SOMETHING
   app.get('/api/notes/:id', (request, response) => {
     Note.findById(request.params.id).then(note => {
-      response.json(note)
+      if (note) {
+        response.json(note)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(400).send({ error: 'malformatted id' })
     })
   })
 
