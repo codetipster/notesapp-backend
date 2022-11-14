@@ -72,6 +72,7 @@ app.get('/api/notes', (request, response) => {
     note.save().then(savedNote => {
       response.json(savedNote)
     })
+    .catch(error => next(error))
   })
 
 
